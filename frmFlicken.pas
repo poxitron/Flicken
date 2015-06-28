@@ -52,12 +52,6 @@ type
     { Public declarations }
   end;
 
-   { TMyThread }
-  TMyThread = class(TThread)
-  protected
-    procedure Execute; override;
-  end;
-
 var
   Form2: TForm2;
   INI: TINIFile;
@@ -100,7 +94,7 @@ type
 end;
 
 var
-  FileToProbe: TStream;
+  FileToProbe: TFileStream;
   header: TMyHeader;
   RegExOrigen, RegExDestino: TRegEx;
   MOrigen, MDestino: TMatch;
@@ -193,29 +187,14 @@ end;
 
 // inicia el thread
 procedure TForm2.Parchear_ButtonClick(Sender: TObject);
-var
-  AThread:TMyThread;
 begin
-  try
-    AThread:=TMyThread.Create(True);
-    AThread.FreeOnTerminate:=true;
-    AThread.Start;
-  finally
-  end;
-end;
-
-procedure TMyThread.Execute;
-begin
-  try
-    Form2.Estado_Label.Caption:='Estado: Extrayendo archivos...';
-    ExtraerArchivos;
-    Form2.Estado_Label.Caption:='Estado: Parcheando archivos...';
-    ParchearArchivos;
-    Form2.Estado_Label.Caption:='Estado: Borrando archivos temporales...';
-    TDirectory.Delete(TempDirectory, True);
-    Form2.Estado_Label.Caption:='Estado: Proceso finalizado.';
-  finally
-  end;
+  Form2.Estado_Label.Caption:='Estado: Extrayendo archivos...';
+  ExtraerArchivos;
+  Form2.Estado_Label.Caption:='Estado: Parcheando archivos...';
+  ParchearArchivos;
+  //Form2.Estado_Label.Caption:='Estado: Borrando archivos temporales...';
+  TDirectory.Delete(TempDirectory, True);
+  Form2.Estado_Label.Caption:='Estado: Proceso finalizado.';
 end;
 
 { TODO 1 : Añadir las comprobaciones pertientes }
