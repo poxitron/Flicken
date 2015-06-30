@@ -22,9 +22,9 @@ unit frmFlicken;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, System.Zip, INIFiles, System.IOUtils,
-  RegularExpressions;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Winapi.ShellAPI, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  System.Zip, INIFiles, System.IOUtils, RegularExpressions;
 
 type
   TForm2 = class(TForm)
@@ -46,8 +46,10 @@ type
     procedure RutaDestino_ButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Parchear_ButtonClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
+    procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
   public
     { Public declarations }
   end;
@@ -70,6 +72,53 @@ begin
   Result := '';
   for I := 1 to length (H) div 2 do
     Result := Result+Char(StrToInt('$'+Copy(H,(I-1)*2+1,2)));
+end;
+
+// arrastrar y soltar archivos desde Windows
+procedure TForm2.AppMessage(var Msg: TMsg; var Handled: Boolean);
+var
+  QtyDroppedFiles, FileIndex: Integer;
+  pDroppedFilename: array[0..255] of Char;
+begin
+  if Msg.message=WM_DROPFILES then
+  begin
+    QtyDroppedFiles:=DragQueryFile(Msg.wParam, Cardinal(-1), nil, 0);
+    try
+      for FileIndex:=0 to QtyDroppedFiles -1 do
+      begin
+        DragQueryFile(Msg.wParam, FileIndex, @pDroppedFilename, sizeof(pDroppedFilename));
+        if Msg.hwnd= ArchivoZip_Edit.Handle then
+        begin
+          // comprueba si es un archivo .zip y lo añade
+          if FileExists(PChar(@pDroppedFilename)) and SameText(ExtractFileExt(PChar(@pDroppedFilename)), '.zip') then
+          begin
+            ArchivoZip_Edit.Text := PChar(@pDroppedFilename);
+          end;
+        end
+        else
+        if Msg.hwnd = RutaOrigen_Edit.Handle then
+        begin
+          // comprueba si es una carpeta y lo añade
+          if DirectoryExists(PChar(@pDroppedFilename)) then
+          begin
+            RutaOrigen_Edit.Text := PChar(@pDroppedFilename);
+          end;
+        end
+        else
+        if Msg.hwnd = RutaDestino_Edit.Handle then
+        begin
+          // comprueba si es una carpeta y lo añade
+          if DirectoryExists(Pchar(@pDroppedFilename)) then
+          begin
+            RutaDestino_Edit.Text := PChar(@pDroppedFilename);
+          end;
+        end;
+      end;
+    finally
+      DragFinish(Msg.wParam);
+      Handled:=True;
+    end;
+  end;
 end;
 
 // extraer el archivo .zip a la carpeta temporal de Windows
@@ -124,7 +173,7 @@ begin
       MDestino := RegExDestino.Match(Form2.Memo1.Text);
       if MDestino.Success then
       begin
-        ArchivoDestino := Form2.RutaDestino_Edit.Text +  ExtractFileName(MDestino.Value);
+        ArchivoDestino := IncludeTrailingPathDelimiter(Form2.RutaDestino_Edit.Text) +  ExtractFileName(MDestino.Value);
         Delete(ArchivoDestino, Length(ArchivoDestino)-1, 2);
       end;
       // obtiene el nombre de archivo que se va a parchear
@@ -132,7 +181,7 @@ begin
       MOrigen := RegExOrigen.Match(Form2.Memo1.Text);
       if MOrigen.Success then
       begin
-        ArchivoOrigen := Form2.RutaOrigen_Edit.Text + ExtractFileName(MOrigen.Value);
+        ArchivoOrigen := IncludeTrailingPathDelimiter(Form2.RutaOrigen_Edit.Text) + ExtractFileName(MOrigen.Value);
         Delete(ArchivoOrigen, Length(ArchivoOrigen), 1);
       end;
       parametros := '"' + ArchivoOrigen + '" "' + Archivoxdelta + '" "' + ArchivoDestino + '"';
@@ -148,8 +197,19 @@ end;
 
 procedure TForm2.FormCreate(Sender: TObject);
 begin
+  Application.OnMessage := AppMessage;
+  DragAcceptFiles(ArchivoZip_Edit.Handle, True);
+  DragAcceptFiles(RutaOrigen_Edit.Handle, True);
+  DragAcceptFiles(RutaDestino_Edit.Handle, True);
   RutaEjecutable := ExtractFileDir(Application.ExeName);
   TempDirectory := GetEnvironmentVariable('TEMP')+'\PatchMe';
+end;
+
+procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  DragAcceptFiles(ArchivoZip_Edit.Handle, False);
+  DragAcceptFiles(RutaOrigen_Edit.Handle, False);
+  DragAcceptFiles(RutaDestino_Edit.Handle, False);
 end;
 
 // seleccionar el archivo zip
@@ -166,7 +226,7 @@ with TFileOpenDialog.Create(nil) do
   try
     Options := [fdoPickFolders];
     if Execute then
-      RutaOrigen_Edit.Text := IncludeTrailingBackslash(FileName);
+      RutaOrigen_Edit.Text := FileName;
   finally
     Free;
   end;
@@ -179,13 +239,12 @@ with TFileOpenDialog.Create(nil) do
   try
     Options := [fdoPickFolders];
     if Execute then
-      RutaDestino_Edit.Text := IncludeTrailingBackslash(FileName);
+      RutaDestino_Edit.Text := FileName;
   finally
     Free;
   end;
 end;
 
-// inicia el thread
 procedure TForm2.Parchear_ButtonClick(Sender: TObject);
 begin
   Estado_Label.Caption := 'Estado: Extrayendo archivos...';
@@ -198,5 +257,5 @@ begin
   Estado_Label.Caption := 'Estado: Proceso finalizado.';
 end;
 
-{ TODO 2 : Añadir la función para arrastrar y soltar archivos .zip y carpetas }
+{ TODO 1: Añadir un hilo (thread) para que la aplicación no se quede congelada. }
 end.

@@ -14,6 +14,7 @@ object Form2: TForm2
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   DesignSize = (
     420
