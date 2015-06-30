@@ -188,15 +188,15 @@ end;
 // inicia el thread
 procedure TForm2.Parchear_ButtonClick(Sender: TObject);
 begin
-  Form2.Estado_Label.Caption := 'Estado: Extrayendo archivos...';
+  Estado_Label.Caption := 'Estado: Extrayendo archivos...';
+  Estado_Label.Update;
   ExtraerArchivos;
-  Form2.Estado_Label.Caption := 'Estado: Parcheando archivos...';
+  Estado_Label.Caption := 'Estado: Parcheando archivos...';
+  Estado_Label.Update;
   ParchearArchivos;
-  //Form2.Estado_Label.Caption := 'Estado: Borrando archivos temporales...';
   TDirectory.Delete(TempDirectory, True);
-  Form2.Estado_Label.Caption := 'Estado: Proceso finalizado.';
+  Estado_Label.Caption := 'Estado: Proceso finalizado.';
 end;
 
-{ TODO 1 : Añadir las comprobaciones pertientes }
 { TODO 2 : Añadir la función para arrastrar y soltar archivos .zip y carpetas }
 end.
