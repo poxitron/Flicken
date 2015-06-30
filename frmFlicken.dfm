@@ -57,7 +57,6 @@ object Form2: TForm2
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
-    ExplicitWidth = 391
   end
   object Zip_Button: TButton
     Left = 371
@@ -68,7 +67,6 @@ object Form2: TForm2
     Caption = '...'
     TabOrder = 1
     OnClick = Zip_ButtonClick
-    ExplicitLeft = 405
   end
   object RutaOrigen_Edit: TEdit
     Left = 8
@@ -77,7 +75,6 @@ object Form2: TForm2
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 2
-    ExplicitWidth = 391
   end
   object Origen_Button: TButton
     Left = 371
@@ -88,7 +85,6 @@ object Form2: TForm2
     Caption = '...'
     TabOrder = 3
     OnClick = Origen_ButtonClick
-    ExplicitLeft = 405
   end
   object RutaDestino_Edit: TEdit
     Left = 8
@@ -97,7 +93,6 @@ object Form2: TForm2
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 4
-    ExplicitWidth = 391
   end
   object RutaDestino_Button: TButton
     Left = 371
@@ -108,7 +103,6 @@ object Form2: TForm2
     Caption = '...'
     TabOrder = 5
     OnClick = RutaDestino_ButtonClick
-    ExplicitLeft = 405
   end
   object Parchear_Button: TButton
     Left = 337
@@ -119,8 +113,6 @@ object Form2: TForm2
     Caption = 'Inicar'
     TabOrder = 6
     OnClick = Parchear_ButtonClick
-    ExplicitLeft = 371
-    ExplicitTop = 201
   end
   object Memo1: TMemo
     Left = 8
@@ -130,8 +122,6 @@ object Form2: TForm2
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 7
     Visible = False
-    ExplicitWidth = 345
-    ExplicitHeight = 54
   end
   object Zip_OpenDialog: TOpenDialog
     Filter = 'Archivo .zip|*.zip'

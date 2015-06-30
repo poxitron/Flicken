@@ -67,17 +67,17 @@ uses MyFunctions;
 function HexToString(H: String): String;
 var I : Integer;
 begin
-  Result:= '';
+  Result := '';
   for I := 1 to length (H) div 2 do
-    Result:= Result+Char(StrToInt('$'+Copy(H,(I-1)*2+1,2)));
+    Result := Result+Char(StrToInt('$'+Copy(H,(I-1)*2+1,2)));
 end;
 
-// extraer el archivo zip a la carpeta temporal de Windows
+// extraer el archivo .zip a la carpeta temporal de Windows
 procedure ExtraerArchivos;
 var
   AZipper: TZipFile;
 begin
-  AZipper:=TZipFile.Create;
+  AZipper := TZipFile.Create;
   try
     AZipper.Open(Form2.ArchivoZip_Edit.Text,zmRead);
     AZipper.ExtractAll(TempDirectory);
@@ -101,20 +101,21 @@ var
   AListBox: TStringList;
   parametros, Archivoxdelta, ArchivoOrigen, ArchivoDestino: String;
   h, i: integer;
+
 begin
-  // Open the file and read the header
-  AListBox:=TStringList.Create;
-  AListBox.Sorted:=True;
+  // abrir el archivo y leer el encabezado
+  AListBox := TStringList.Create;
+  AListBox.Sorted := True;
   try
     FileSearch(TempDirectory, '.xdelta;.vcdiff', AListBox);
-    for i:=0 to AListBox.Count -1 do
+    for i := 0 to AListBox.Count -1 do
     begin
       Form2.Memo1.Clear;
-      Archivoxdelta:=AListBox.Strings[i];
+      Archivoxdelta := AListBox.Strings[i];
       FileToProbe := TFileStream.Create(Archivoxdelta, fmOpenRead);
       FileToProbe.seek(0, soFromBeginning);
       FileToProbe.ReadBuffer(header, SizeOf(header));
-      for h:= 0 to 500 do
+      for h := 0 to 500 do
       begin
         Form2.Memo1.Text := Form2.Memo1.Text + HexToString(IntToHex(header.Header[h], 2));
       end;
@@ -126,7 +127,7 @@ begin
         ArchivoDestino := Form2.RutaDestino_Edit.Text +  ExtractFileName(MDestino.Value);
         Delete(ArchivoDestino, Length(ArchivoDestino)-1, 2);
       end;
-      // obtiene el nombre de archivo de origen
+      // obtiene el nombre de archivo que se va a parchear
       RegExOrigen.Create('//(.*?)/',[roSingleLine]);
       MOrigen := RegExOrigen.Match(Form2.Memo1.Text);
       if MOrigen.Success then
@@ -135,9 +136,8 @@ begin
         Delete(ArchivoOrigen, Length(ArchivoOrigen), 1);
       end;
       parametros := '"' + ArchivoOrigen + '" "' + Archivoxdelta + '" "' + ArchivoDestino + '"';
-      //MessageDlg(RutaEjecutable+'\xdelta.exe -f -d -s ' + parametros, mtError, [mbOK], 0);
       FileToProbe.Free;
-      ExecNewProcess(RutaEjecutable+'\xdelta.exe -f -d -s '+parametros, SW_HIDE, True);
+      ExecNewProcess(RutaEjecutable + '\xdelta.exe -f -d -s ' + parametros, SW_HIDE, True);
     end;
   finally
     AListBox.Free;
@@ -148,8 +148,8 @@ end;
 
 procedure TForm2.FormCreate(Sender: TObject);
 begin
-  RutaEjecutable:=ExtractFileDir(Application.ExeName);
-  TempDirectory:=GetEnvironmentVariable('TEMP')+'\PatchMe';
+  RutaEjecutable := ExtractFileDir(Application.ExeName);
+  TempDirectory := GetEnvironmentVariable('TEMP')+'\PatchMe';
 end;
 
 // seleccionar el archivo zip
@@ -166,7 +166,7 @@ with TFileOpenDialog.Create(nil) do
   try
     Options := [fdoPickFolders];
     if Execute then
-      RutaOrigen_Edit.Text:= IncludeTrailingBackslash(FileName);
+      RutaOrigen_Edit.Text := IncludeTrailingBackslash(FileName);
   finally
     Free;
   end;
@@ -179,7 +179,7 @@ with TFileOpenDialog.Create(nil) do
   try
     Options := [fdoPickFolders];
     if Execute then
-      RutaDestino_Edit.Text:= IncludeTrailingBackslash(FileName);
+      RutaDestino_Edit.Text := IncludeTrailingBackslash(FileName);
   finally
     Free;
   end;
@@ -188,15 +188,15 @@ end;
 // inicia el thread
 procedure TForm2.Parchear_ButtonClick(Sender: TObject);
 begin
-  Form2.Estado_Label.Caption:='Estado: Extrayendo archivos...';
+  Form2.Estado_Label.Caption := 'Estado: Extrayendo archivos...';
   ExtraerArchivos;
-  Form2.Estado_Label.Caption:='Estado: Parcheando archivos...';
+  Form2.Estado_Label.Caption := 'Estado: Parcheando archivos...';
   ParchearArchivos;
-  //Form2.Estado_Label.Caption:='Estado: Borrando archivos temporales...';
+  //Form2.Estado_Label.Caption := 'Estado: Borrando archivos temporales...';
   TDirectory.Delete(TempDirectory, True);
-  Form2.Estado_Label.Caption:='Estado: Proceso finalizado.';
+  Form2.Estado_Label.Caption := 'Estado: Proceso finalizado.';
 end;
 
 { TODO 1 : Añadir las comprobaciones pertientes }
-{ TODO 2 : Añadir la función para arrastras y solartar archivos .zip y carpetas }
+{ TODO 2 : Añadir la función para arrastrar y soltar archivos .zip y carpetas }
 end.
