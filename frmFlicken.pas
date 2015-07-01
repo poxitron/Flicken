@@ -94,8 +94,7 @@ begin
           begin
             ArchivoZip_Edit.Text := PChar(@pDroppedFilename);
           end;
-        end
-        else
+        end;
         if Msg.hwnd = RutaOrigen_Edit.Handle then
         begin
           // comprueba si es una carpeta y lo añade
@@ -103,8 +102,7 @@ begin
           begin
             RutaOrigen_Edit.Text := PChar(@pDroppedFilename);
           end;
-        end
-        else
+        end;
         if Msg.hwnd = RutaDestino_Edit.Handle then
         begin
           // comprueba si es una carpeta y lo añade
