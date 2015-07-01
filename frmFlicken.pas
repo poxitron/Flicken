@@ -1,6 +1,6 @@
-{
+ï»¿{
         Flicken
-        Copyright © 2014, poxitron
+        Copyright Â© 2014, poxitron
         This file is part of Flicken.
 
     Flicken is free software: you can redistribute it and/or modify
@@ -54,6 +54,12 @@ type
     { Public declarations }
   end;
 
+  { TMyThread }
+  TMyThread = class(TThread)
+  protected
+    procedure Execute; override;
+  end;
+
 var
   Form2: TForm2;
   INI: TINIFile;
@@ -74,6 +80,40 @@ begin
     Result := Result+Char(StrToInt('$'+Copy(H,(I-1)*2+1,2)));
 end;
 
+procedure DeshabilitarComponentes;
+var
+  i: Integer;
+begin
+  for i := 0 to Form2.ComponentCount - 1 do
+  begin
+    if Form2.Components[i] is TButton then
+    begin
+      TButton(Form2.Components[i]).Enabled := False;
+    end;
+    if Form2.Components[i] is TEdit then
+    begin
+      TEdit(Form2.Components[i]).Enabled := False;
+    end;
+  end;
+end;
+
+procedure HabilitarComponentes;
+var
+  i: Integer;
+begin
+  for i := 0 to Form2.ComponentCount - 1 do
+  begin
+    if Form2.Components[i] is TButton then
+    begin
+      TButton(Form2.Components[i]).Enabled := True;
+    end;
+    if Form2.Components[i] is TEdit then
+    begin
+      TEdit(Form2.Components[i]).Enabled := True;
+    end;
+  end;
+end;
+
 // arrastrar y soltar archivos desde Windows
 procedure TForm2.AppMessage(var Msg: TMsg; var Handled: Boolean);
 var
@@ -89,7 +129,7 @@ begin
         DragQueryFile(Msg.wParam, FileIndex, @pDroppedFilename, sizeof(pDroppedFilename));
         if Msg.hwnd= ArchivoZip_Edit.Handle then
         begin
-          // comprueba si es un archivo .zip y lo añade
+          // comprueba si es un archivo .zip y lo aÃ±ade
           if FileExists(PChar(@pDroppedFilename)) and SameText(ExtractFileExt(PChar(@pDroppedFilename)), '.zip') then
           begin
             ArchivoZip_Edit.Text := PChar(@pDroppedFilename);
@@ -97,7 +137,7 @@ begin
         end;
         if Msg.hwnd = RutaOrigen_Edit.Handle then
         begin
-          // comprueba si es una carpeta y lo añade
+          // comprueba si es una carpeta y lo aÃ±ade
           if DirectoryExists(PChar(@pDroppedFilename)) then
           begin
             RutaOrigen_Edit.Text := PChar(@pDroppedFilename);
@@ -105,7 +145,7 @@ begin
         end;
         if Msg.hwnd = RutaDestino_Edit.Handle then
         begin
-          // comprueba si es una carpeta y lo añade
+          // comprueba si es una carpeta y lo aÃ±ade
           if DirectoryExists(Pchar(@pDroppedFilename)) then
           begin
             RutaDestino_Edit.Text := PChar(@pDroppedFilename);
@@ -135,20 +175,14 @@ begin
 end;
 
 procedure ParchearArchivos;
-type
- TMyHeader = packed record
- header: array[0..500] of byte;
-end;
-
 var
   FileToProbe: TFileStream;
-  header: TMyHeader;
   RegExOrigen, RegExDestino: TRegEx;
   MOrigen, MDestino: TMatch;
   AListBox: TStringList;
   parametros, Archivoxdelta, ArchivoOrigen, ArchivoDestino: String;
   h, i: integer;
-
+  Header: array[0..500] of byte;
 begin
   // abrir el archivo y leer el encabezado
   AListBox := TStringList.Create;
@@ -161,11 +195,12 @@ begin
       Archivoxdelta := AListBox.Strings[i];
       FileToProbe := TFileStream.Create(Archivoxdelta, fmOpenRead);
       FileToProbe.seek(0, soFromBeginning);
-      FileToProbe.ReadBuffer(header, SizeOf(header));
+      FileToProbe.ReadBuffer(Header, SizeOf(Header));
       for h := 0 to 500 do
       begin
-        Form2.Memo1.Text := Form2.Memo1.Text + HexToString(IntToHex(header.Header[h], 2));
+        Form2.Memo1.Text := Form2.Memo1.Text + HexToString(IntToHex(Header[h], 2));
       end;
+      FileToProbe.Free;
       // obtiene el nombre de archivo de destino
       RegExDestino.Create('\\(.*?)//',[roSingleLine]);
       MDestino := RegExDestino.Match(Form2.Memo1.Text);
@@ -183,7 +218,6 @@ begin
         Delete(ArchivoOrigen, Length(ArchivoOrigen), 1);
       end;
       parametros := '"' + ArchivoOrigen + '" "' + Archivoxdelta + '" "' + ArchivoDestino + '"';
-      FileToProbe.Free;
       ExecNewProcess(RutaEjecutable + '\xdelta.exe -f -d -s ' + parametros, SW_HIDE, True);
     end;
   finally
@@ -217,7 +251,7 @@ begin
     ArchivoZip_Edit.Text := Zip_OpenDialog.FileName;
 end;
 
-// seleccionar la carpeta donde están los archivos que se van a parchear
+// seleccionar la carpeta donde estÃ¡n los archivos que se van a parchear
 procedure TForm2.Origen_ButtonClick(Sender: TObject);
 begin
 with TFileOpenDialog.Create(nil) do
@@ -230,7 +264,7 @@ with TFileOpenDialog.Create(nil) do
   end;
 end;
 
-// seleccionar la carpeta donde se crearán los archivos parcheados
+// seleccionar la carpeta donde se crearÃ¡n los archivos parcheados
 procedure TForm2.RutaDestino_ButtonClick(Sender: TObject);
 begin
 with TFileOpenDialog.Create(nil) do
@@ -244,16 +278,24 @@ with TFileOpenDialog.Create(nil) do
 end;
 
 procedure TForm2.Parchear_ButtonClick(Sender: TObject);
+var
+  AThread: TMyThread;
 begin
-  Estado_Label.Caption := 'Estado: Extrayendo archivos...';
-  Estado_Label.Update;
-  ExtraerArchivos;
-  Estado_Label.Caption := 'Estado: Parcheando archivos...';
-  Estado_Label.Update;
-  ParchearArchivos;
-  TDirectory.Delete(TempDirectory, True);
-  Estado_Label.Caption := 'Estado: Proceso finalizado.';
+  AThread := TMyThread.Create(True);
+  AThread.FreeOnTerminate := True;
+  AThread.Start;
 end;
 
-{ TODO 1: Añadir un hilo (thread) para que la aplicación no se quede congelada. }
+procedure TMyThread.Execute;
+begin
+  DeshabilitarComponentes;
+  Form2.Estado_Label.Caption := 'Estado: Extrayendo archivos...';
+  ExtraerArchivos;
+  Form2.Estado_Label.Caption := 'Estado: Parcheando archivos...';
+  ParchearArchivos;
+  TDirectory.Delete(TempDirectory, True);
+  HabilitarComponentes;
+  Form2.Estado_Label.Caption := 'Estado: Proceso finalizado.';
+end;
+
 end.

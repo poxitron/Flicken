@@ -3,8 +3,9 @@ object Form2: TForm2
   Top = 0
   Caption = 'Flicken'
   ClientHeight = 202
-  ClientWidth = 420
+  ClientWidth = 434
   Color = clBtnFace
+  Constraints.MaxHeight = 240
   Constraints.MinHeight = 240
   Constraints.MinWidth = 360
   Font.Charset = DEFAULT_CHARSET
@@ -17,7 +18,7 @@ object Form2: TForm2
   OnClose = FormClose
   OnCreate = FormCreate
   DesignSize = (
-    420
+    434
     202)
   PixelsPerInch = 96
   TextHeight = 13
@@ -54,13 +55,13 @@ object Form2: TForm2
   object ArchivoZip_Edit: TEdit
     Left = 8
     Top = 32
-    Width = 357
+    Width = 371
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
   end
   object Zip_Button: TButton
-    Left = 371
+    Left = 385
     Top = 30
     Width = 41
     Height = 25
@@ -72,13 +73,13 @@ object Form2: TForm2
   object RutaOrigen_Edit: TEdit
     Left = 8
     Top = 78
-    Width = 357
+    Width = 371
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 2
   end
   object Origen_Button: TButton
-    Left = 371
+    Left = 385
     Top = 76
     Width = 41
     Height = 25
@@ -90,13 +91,13 @@ object Form2: TForm2
   object RutaDestino_Edit: TEdit
     Left = 8
     Top = 124
-    Width = 357
+    Width = 371
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 4
   end
   object RutaDestino_Button: TButton
-    Left = 371
+    Left = 385
     Top = 122
     Width = 41
     Height = 25
@@ -106,7 +107,7 @@ object Form2: TForm2
     OnClick = RutaDestino_ButtonClick
   end
   object Parchear_Button: TButton
-    Left = 337
+    Left = 351
     Top = 162
     Width = 75
     Height = 25
@@ -118,15 +119,14 @@ object Form2: TForm2
   object Memo1: TMemo
     Left = 8
     Top = 151
-    Width = 311
-    Height = 17
-    Anchors = [akLeft, akTop, akRight, akBottom]
+    Width = 320
+    Height = 50
+    Anchors = []
     TabOrder = 7
-    Visible = False
   end
   object Zip_OpenDialog: TOpenDialog
     Filter = 'Archivo .zip|*.zip'
-    Left = 280
-    Top = 160
+    Left = 200
+    Top = 152
   end
 end
