@@ -73,11 +73,12 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <Icon_MainIcon>Resources\Icon.ico</Icon_MainIcon>
         <VerInfo_Release>1</VerInfo_Release>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=0.0.1.0;InternalName=Flicken;LegalCopyright=Copyright @ 2014, poxitron;LegalTrademarks=;OriginalFilename=Flicken.exe;ProductName=Flicken;ProductVersion=0.0.1.0;Comments=</VerInfo_Keys>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
-        <DCC_ExeOutput>C:\Users\poxitron\Desktop\$(Config)</DCC_ExeOutput>
-        <DCC_DcuOutput>C:\Users\poxitron\Desktop\$(Config)</DCC_DcuOutput>
+        <DCC_ExeOutput>C:\Users\poxitron\Desktop\$(Config)\Flicken</DCC_ExeOutput>
+        <DCC_DcuOutput>C:\Users\poxitron\Desktop\$(Config)\Flicken\Unit</DCC_DcuOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -92,8 +93,8 @@
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=0.0.1.0;InternalName=Flicken;LegalCopyright=Copyright @ 2014, poxitron;LegalTrademarks=;OriginalFilename=Flicken.exe;ProductName=Flicken;ProductVersion=0.0.1.0;Comments=</VerInfo_Keys>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
         <VerInfo_Release>1</VerInfo_Release>
-        <DCC_DcuOutput>C:\Users\poxitron\Desktop\$(Config)</DCC_DcuOutput>
-        <DCC_ExeOutput>C:\Users\poxitron\Desktop\$(Config)</DCC_ExeOutput>
+        <DCC_DcuOutput>C:\Users\poxitron\Desktop\$(Config)\Flicken\Unit</DCC_DcuOutput>
+        <DCC_ExeOutput>C:\Users\poxitron\Desktop\$(Config)\Flicken</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
     </PropertyGroup>

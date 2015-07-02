@@ -250,12 +250,13 @@ end;
 
 procedure TForm2.FormCreate(Sender: TObject);
 begin
+  Form2.Caption := Application.Title + GetAppVersion;
   Application.OnMessage := AppMessage;
   DragAcceptFiles(ArchivoZip_Edit.Handle, True);
   DragAcceptFiles(RutaOrigen_Edit.Handle, True);
   DragAcceptFiles(RutaDestino_Edit.Handle, True);
   RutaEjecutable := ExtractFileDir(Application.ExeName);
-  TempDirectory := GetEnvironmentVariable('TEMP')+'\PatchMe';
+  TempDirectory := GetEnvironmentVariable('TEMP') + '\PatchMe';
   try
     INI := TINIFile.Create(RutaEjecutable + '\config.ini');
     Self.Top := INI.ReadInteger('form', 'MainFormTop', Screen.DesktopHeight div 2 - 120);
