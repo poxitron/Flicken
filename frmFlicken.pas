@@ -40,7 +40,6 @@ type
     RutaDestino_Button: TButton;
     Parchear_Button: TButton;
     Estado_Label: TLabel;
-    Memo1: TMemo;
     procedure Origen_ButtonClick(Sender: TObject);
     procedure Zip_ButtonClick(Sender: TObject);
     procedure RutaDestino_ButtonClick(Sender: TObject);
@@ -175,52 +174,74 @@ begin
 end;
 
 procedure ParchearArchivos;
+type
+ TMyHeader = packed record
+ Header1: byte;
+ Header2: byte;
+ Header3: byte;
+ Header4: byte;
+ Hdr_Indicator: byte;
+ Win_Indicator: byte;
+ Header: array [0..500] of byte;
+end;
+
 var
-  FileToProbe: TFileStream;
+  FileStream1: TFileStream;
+  Streamlist: TStringStream;
+  MyHeader: TMyHeader;
   RegExOrigen, RegExDestino: TRegEx;
   MOrigen, MDestino: TMatch;
   AListBox: TStringList;
   parametros, Archivoxdelta, ArchivoOrigen, ArchivoDestino: String;
   h, i: integer;
-  Header: array[0..500] of byte;
 begin
   // abrir el archivo y leer el encabezado
   AListBox := TStringList.Create;
   AListBox.Sorted := True;
+  Streamlist := TStringStream.Create('', TEncoding.Unicode);
+  FileSearch(TempDirectory, '.xdelta;.vcdiff', AListBox);
   try
-    FileSearch(TempDirectory, '.xdelta;.vcdiff', AListBox);
     for i := 0 to AListBox.Count -1 do
     begin
-      Form2.Memo1.Clear;
       Archivoxdelta := AListBox.Strings[i];
-      FileToProbe := TFileStream.Create(Archivoxdelta, fmOpenRead);
-      FileToProbe.seek(0, soFromBeginning);
-      FileToProbe.ReadBuffer(Header, SizeOf(Header));
+      FileStream1 := TFileStream.Create(Archivoxdelta, fmOpenRead or fmShareDenyNone);
+      FileStream1.seek(0, soFromBeginning);
+      FileStream1.ReadBuffer(MyHeader, SizeOf(MyHeader));
       for h := 0 to 500 do
       begin
-        Form2.Memo1.Text := Form2.Memo1.Text + HexToString(IntToHex(Header[h], 2));
+        Streamlist.WriteString(HexToString(IntToHex(MyHeader.Header[h], 2)));
       end;
-      FileToProbe.Free;
       // obtiene el nombre de archivo de destino
       RegExDestino.Create('\\(.*?)//',[roSingleLine]);
-      MDestino := RegExDestino.Match(Form2.Memo1.Text);
+      MDestino := RegExDestino.Match(Streamlist.DataString);
       if MDestino.Success then
       begin
         ArchivoDestino := IncludeTrailingPathDelimiter(Form2.RutaDestino_Edit.Text) +  ExtractFileName(MDestino.Value);
         Delete(ArchivoDestino, Length(ArchivoDestino)-1, 2);
+      end
+      else
+      begin
+        MessageDlg('No se ha podido encontrar el archivo de destino en el .xdelta.' + #13 + 'Avisa al desarrollador de la aplicación.', mtError, [mbOK]);
       end;
       // obtiene el nombre de archivo que se va a parchear
       RegExOrigen.Create('//(.*?)/',[roSingleLine]);
-      MOrigen := RegExOrigen.Match(Form2.Memo1.Text);
+      MOrigen := RegExOrigen.Match(Streamlist.DataString);
       if MOrigen.Success then
       begin
         ArchivoOrigen := IncludeTrailingPathDelimiter(Form2.RutaOrigen_Edit.Text) + ExtractFileName(MOrigen.Value);
         Delete(ArchivoOrigen, Length(ArchivoOrigen), 1);
+      end
+      else
+      begin
+        MessageDlg('No se ha podido encontrar el archivo de origen en el .xdelta.' + #13 + 'Avisa al desarrollador de la aplicación.', mtError, [mbOK]);
       end;
+      Streamlist.Size := 0;
+      FileStream1.Free;
       parametros := '"' + ArchivoOrigen + '" "' + Archivoxdelta + '" "' + ArchivoDestino + '"';
       ExecNewProcess(RutaEjecutable + '\xdelta.exe -f -d -s ' + parametros, SW_HIDE, True);
     end;
   finally
+    Streamlist.Free;
     AListBox.Free;
   end;
 end;

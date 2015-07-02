@@ -116,14 +116,6 @@ object Form2: TForm2
     TabOrder = 6
     OnClick = Parchear_ButtonClick
   end
-  object Memo1: TMemo
-    Left = 8
-    Top = 151
-    Width = 320
-    Height = 50
-    Anchors = []
-    TabOrder = 7
-  end
   object Zip_OpenDialog: TOpenDialog
     Filter = 'Archivo .zip|*.zip'
     Left = 200
