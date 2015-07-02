@@ -1,6 +1,6 @@
 ﻿{
         Flicken
-        Copyright © 2014, poxitron
+        Copyright © 2015, poxitron
         This file is part of Flicken.
 
     Flicken is free software: you can redistribute it and/or modify
