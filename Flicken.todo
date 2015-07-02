@@ -1,2 +1,3 @@
+{DONE : Guardar la posición y los últimos directorios usados en un archivo .ini}
 {DONE 1 : Añadir un hilo (thread) para que la aplicación no se quede congelada}
 {DONE 1 : Susituir el Memo1 por algo más apropiado}

@@ -24,7 +24,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Winapi.ShellAPI, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
-  System.Zip, INIFiles, System.IOUtils, RegularExpressions;
+  System.Zip, System.IOUtils, System.UITypes, INIFiles, RegularExpressions;
 
 type
   TForm2 = class(TForm)
@@ -256,6 +256,15 @@ begin
   DragAcceptFiles(RutaDestino_Edit.Handle, True);
   RutaEjecutable := ExtractFileDir(Application.ExeName);
   TempDirectory := GetEnvironmentVariable('TEMP')+'\PatchMe';
+  try
+    INI := TINIFile.Create(RutaEjecutable + '\config.ini');
+    Self.Top := INI.ReadInteger('form', 'MainFormTop', Screen.DesktopHeight div 2 - 120);
+    Self.Left := INI.ReadInteger('form', 'MainFormLeft', Screen.DesktopWidth div 2 - 225);
+    Self.Width := INI.ReadInteger('form', 'MainFormWidth', 500);
+    Self.Height := INI.ReadInteger('form', 'MainFormHeight', 520);
+  finally
+    INI.Free;
+  end;
 end;
 
 procedure TForm2.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -263,6 +272,15 @@ begin
   DragAcceptFiles(ArchivoZip_Edit.Handle, False);
   DragAcceptFiles(RutaOrigen_Edit.Handle, False);
   DragAcceptFiles(RutaDestino_Edit.Handle, False);
+  try
+    INI := TINIFile.Create(RutaEjecutable + '\config.ini');
+    INI.WriteInteger('form', 'MainFormTop', Self.Top);
+    INI.WriteInteger('form', 'MainFormLeft', Self.Left);
+    INI.WriteInteger('form', 'MainFormWidth', Self.Width);
+    INI.WriteInteger('form', 'MainFormHeight', Self.Height);
+  finally
+    Ini.Free;
+  end;
 end;
 
 // seleccionar el archivo zip

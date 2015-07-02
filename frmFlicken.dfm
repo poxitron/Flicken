@@ -14,7 +14,6 @@ object Form2: TForm2
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poDesktopCenter
   OnClose = FormClose
   OnCreate = FormCreate
   DesignSize = (
