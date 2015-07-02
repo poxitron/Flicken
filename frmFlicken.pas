@@ -221,7 +221,7 @@ begin
       end
       else
       begin
-        MessageDlg('No se ha podido encontrar el archivo de destino en el .xdelta.' + #13 + 'Avisa al desarrollador de la aplicación.', mtError, [mbOK]);
+        MessageDlg('No se ha podido encontrar el archivo de destino en el .xdelta.' + #13 + 'Avisa al desarrollador de la aplicación.', mtError, [mbOK], 0);
       end;
       // obtiene el nombre de archivo que se va a parchear
       RegExOrigen.Create('//(.*?)/',[roSingleLine]);
@@ -233,7 +233,7 @@ begin
       end
       else
       begin
-        MessageDlg('No se ha podido encontrar el archivo de origen en el .xdelta.' + #13 + 'Avisa al desarrollador de la aplicación.', mtError, [mbOK]);
+        MessageDlg('No se ha podido encontrar el archivo de origen en el .xdelta.' + #13 + 'Avisa al desarrollador de la aplicación.', mtError, [mbOK], 0);
       end;
       Streamlist.Size := 0;
       FileStream1.Free;
@@ -302,9 +302,20 @@ procedure TForm2.Parchear_ButtonClick(Sender: TObject);
 var
   AThread: TMyThread;
 begin
-  AThread := TMyThread.Create(True);
-  AThread.FreeOnTerminate := True;
-  AThread.Start;
+  if not FileExists(ArchivoZip_Edit.Text)  then
+    MessageDlg('El archivo .zip no existe.', mtError, [mbOK], 0)
+  else
+  if not DirectoryExists(RutaOrigen_Edit.Text) then
+    MessageDlg('El directorio de origen no existe.', mtError, [mbOK], 0)
+  else
+  if not DirectoryExists(RutaDestino_Edit.Text) then
+    MessageDlg('El directorio de destino no existe.', mtError, [mbOK], 0)
+  else
+  begin
+    AThread := TMyThread.Create(True);
+    AThread.FreeOnTerminate := True;
+    AThread.Start;
+  end;
 end;
 
 procedure TMyThread.Execute;
