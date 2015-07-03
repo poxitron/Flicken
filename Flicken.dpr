@@ -2,7 +2,7 @@ program Flicken;
 
 uses
   Vcl.Forms,
-  frmFlicken in 'frmFlicken.pas' {Form2},
+  frmMain in 'frmMain.pas' {Form2},
   MyFunctions in 'MyFunctions.pas';
 
 {$R *.res}

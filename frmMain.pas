@@ -17,7 +17,7 @@
     along with Flicken.  If not, see <http://www.gnu.org/licenses/>.
 }
 
-unit frmFlicken;
+unit frmMain;
 
 interface
 

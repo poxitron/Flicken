@@ -148,7 +148,7 @@ object Form2: TForm2
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
-    Caption = 'Inicar'
+    Caption = 'Iniciar'
     TabOrder = 6
     OnClick = Parchear_ButtonClick
   end
