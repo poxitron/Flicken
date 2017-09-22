@@ -129,7 +129,7 @@ begin
         if Msg.hwnd= ArchivoZip_Edit.Handle then
         begin
           // comprueba si es un archivo .zip y lo añade
-          if FileExists(PChar(@pDroppedFilename)) and SameText(ExtractFileExt(PChar(@pDroppedFilename)), '.zip') then
+          if FileExists(PChar(@pDroppedFilename)) then // and SameText(ExtractFileExt(PChar(@pDroppedFilename)), '.zip') then
           begin
             ArchivoZip_Edit.Text := PChar(@pDroppedFilename);
           end;
@@ -159,17 +159,25 @@ begin
 end;
 
 // extraer el archivo .zip a la carpeta temporal de Windows
+//procedure ExtraerArchivos;
+//var
+//  AZipper: TZipFile;
+//begin
+//  AZipper := TZipFile.Create;
+//  try
+//    AZipper.Open(Form2.ArchivoZip_Edit.Text,zmRead);
+//    AZipper.ExtractAll(TempDirectory);
+//    AZipper.Close;
+//  finally
+//    AZipper.Free;
+//  end;
+//end;
 procedure ExtraerArchivos;
-var
-  AZipper: TZipFile;
 begin
-  AZipper := TZipFile.Create;
   try
-    AZipper.Open(Form2.ArchivoZip_Edit.Text,zmRead);
-    AZipper.ExtractAll(TempDirectory);
-    AZipper.Close;
+    ExecNewProcess(RutaEjecutable + '\7z.exe e ' + '"' +Form2.ArchivoZip_Edit.Text + '" -o"' + TempDirectory + '"'+ ' *.xdelta -y', SW_HIDE, True);
   finally
-    AZipper.Free;
+
   end;
 end;
 

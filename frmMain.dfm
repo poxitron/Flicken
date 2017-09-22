@@ -61,9 +61,9 @@ object Form2: TForm2
   object Label1: TLabel
     Left = 8
     Top = 13
-    Width = 128
+    Width = 93
     Height = 13
-    Caption = 'Parche comprimido en .zip:'
+    Caption = 'Parche comprimido:'
   end
   object Label2: TLabel
     Left = 8
@@ -82,11 +82,10 @@ object Form2: TForm2
   object Estado_Label: TLabel
     Left = 8
     Top = 174
-    Width = 125
+    Width = 95
     Height = 13
     Anchors = [akLeft, akBottom]
-    Caption = 'Estado: Esperando datos.'
-    ExplicitTop = 212
+    Caption = 'Estado: Esperando.'
   end
   object ArchivoZip_Edit: TEdit
     Left = 8
@@ -153,7 +152,10 @@ object Form2: TForm2
     OnClick = Parchear_ButtonClick
   end
   object Zip_OpenDialog: TOpenDialog
-    Filter = 'Archivo .zip|*.zip'
+    Filter = 
+      'Archivos soportados|*.zip;*.7z;*.rar;*.exe|Archivos zip|*.zip|Ar' +
+      'chivos 7z|*.7z|Archivos rar|*.rar|Archivos autoextra'#237'bles|*.exe|' +
+      'Todos los archivos|*.*'
     Left = 200
     Top = 152
   end
