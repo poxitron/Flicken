@@ -41,7 +41,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <VerInfo_Locale>3082</VerInfo_Locale>
         <SanitizedProjectName>Flicken</SanitizedProjectName>
@@ -61,7 +61,7 @@
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_UsePackage>bindcompfmx;DBXSqliteDriver;RESTBackendComponents;fmx;rtl;dbrtl;DbxClientDriver;IndySystem;tethering;bindcomp;inetdb;DBXInterBaseDriver;xmlrtl;svnui;DbxCommonDriver;vclimg;IndyProtocols;dbxcds;DBXMySQLDriver;MetropolisUILiveTile;soaprtl;vclactnband;bindengine;vcldb;bindcompdbx;vcldsnap;bindcompvcl;vclie;vcltouch;emsclient;CustomIPTransport;vclribbon;VclSmp;dsnap;IndyIPServer;VCLRESTComponents;fmxase;vcl;IndyCore;IndyIPCommon;CloudService;dsnapcon;inet;fmxobj;soapserver;soapmidas;vclx;inetdbxpress;svn;dsnapxml;fmxdae;RESTComponents;VirtualTreesR;adortl;dbexpress;IndyIPClient;$(DCC_UsePackage)</DCC_UsePackage>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=0.0.1.0;InternalName=Flicken;LegalCopyright=Copyright @ 2014, poxitron;LegalTrademarks=;OriginalFilename=Flicken.exe;ProductName=Flicken;ProductVersion=0.0.1.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.0.0;InternalName=Flicken;LegalCopyright=Copyright @ 2014, poxitron;LegalTrademarks=;OriginalFilename=Flicken.exe;ProductName=Flicken;ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
@@ -74,7 +74,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <Icon_MainIcon>Resources\Icon.ico</Icon_MainIcon>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=Flicken;LegalCopyright=Copyright @ 2014, poxitron;LegalTrademarks=;OriginalFilename=Flicken.exe;ProductName=Flicken;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.0.0;InternalName=Flicken;LegalCopyright=Copyright @ 2014, poxitron;LegalTrademarks=;OriginalFilename=Flicken.exe;ProductName=Flicken;ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
         <DCC_ExeOutput>C:\Users\poxitron\Desktop\$(Config)\Flicken</DCC_ExeOutput>
         <DCC_DcuOutput>C:\Users\poxitron\Desktop\$(Config)\Flicken\Unit</DCC_DcuOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -89,7 +89,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <Icon_MainIcon>Resources\Icon.ico</Icon_MainIcon>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=Flicken;LegalCopyright=Copyright @ 2015, poxitron;LegalTrademarks=;OriginalFilename=Flicken.exe;ProductName=Flicken;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.0.0;InternalName=Flicken;LegalCopyright=Copyright @ 2015, poxitron;LegalTrademarks=;OriginalFilename=Flicken.exe;ProductName=Flicken;ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
         <DCC_DcuOutput>C:\Users\poxitron\Desktop\$(Config)\Flicken\Unit</DCC_DcuOutput>
         <DCC_ExeOutput>C:\Users\poxitron\Desktop\$(Config)\Flicken</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
