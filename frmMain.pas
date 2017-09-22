@@ -24,7 +24,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Winapi.ShellAPI, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
-  System.Zip, System.IOUtils, System.UITypes, INIFiles, RegularExpressions;
+  System.IOUtils, System.UITypes, INIFiles, RegularExpressions;
 
 type
   TForm2 = class(TForm)
@@ -129,7 +129,7 @@ begin
         if Msg.hwnd= ArchivoZip_Edit.Handle then
         begin
           // comprueba si es un archivo .zip y lo añade
-          if FileExists(PChar(@pDroppedFilename)) then // and SameText(ExtractFileExt(PChar(@pDroppedFilename)), '.zip') then
+          if FileExists(PChar(@pDroppedFilename)) then
           begin
             ArchivoZip_Edit.Text := PChar(@pDroppedFilename);
           end;
@@ -158,20 +158,6 @@ begin
   end;
 end;
 
-// extraer el archivo .zip a la carpeta temporal de Windows
-//procedure ExtraerArchivos;
-//var
-//  AZipper: TZipFile;
-//begin
-//  AZipper := TZipFile.Create;
-//  try
-//    AZipper.Open(Form2.ArchivoZip_Edit.Text,zmRead);
-//    AZipper.ExtractAll(TempDirectory);
-//    AZipper.Close;
-//  finally
-//    AZipper.Free;
-//  end;
-//end;
 procedure ExtraerArchivos;
 begin
   try
